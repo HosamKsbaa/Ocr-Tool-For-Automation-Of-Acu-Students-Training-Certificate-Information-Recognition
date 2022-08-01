@@ -1,7 +1,11 @@
 import cv2
 import pytesseract
 import glob, os
+import xlwt
+from xlwt import Workbook
 
+wb = Workbook()
+sheet1 = wb.add_sheet('Sheet 1')
 
 def getAllImagesINFolder(folder):
     images = []
@@ -11,19 +15,15 @@ def getAllImagesINFolder(folder):
                 images.append(os.path.abspath(os.path.join(dirpath, filename)))
     return images
 
-
-def absoluteFilePaths(directory):
-    for dirpath,_,filenames in os.walk(directory):
-        for f in filenames:
-            yield os.path.abspath(os.path.join(dirpath, f))
-
 def procces(path):
     pytesseract.pytesseract.tesseract_cmd = r"C:\Tesseract-OCR\tesseract.exe"
     img = cv2.imread(path)
     #cv2.imshow("Image", img)
     return pytesseract.image_to_string(img)
 
-
+# def excelWrite(dic, data,index: int):
+#     for i in range(len(dic)):
+        
 
 
 # parametersCount = int(input("parameters Count"))
@@ -34,8 +34,8 @@ def procces(path):
 #     second = input("2nd Text");
 #     patameter = input("parameter name");
 #     dic.append({"first":first, "2nd":second,"patameter":patameter})
-#print(procces("images\sda.jpg"))
-for  images in getAllImagesINFolder("./images"):
+
+for images in getAllImagesINFolder("./images"):
     print(images)
     print(procces(images))
     print("==============================================================================")
