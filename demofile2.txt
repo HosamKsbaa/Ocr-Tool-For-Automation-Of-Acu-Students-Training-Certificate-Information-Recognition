@@ -1,4 +1,0 @@
-Name = Ammar Mahmoud Mohamed Kamal 
-Name = Mohamed Sayed Salah 
-Name = Yousef Naeem Abd El-Hakim 
-Name = Reem Haitham Ahmed Helmy 
