@@ -8,7 +8,7 @@ def getTextInImage(imagePath):
     img = cv2.imread(imagePath)
     #cv2.imshow("Image", img)
     return pytesseract.image_to_string(img)
-
+#
 
 def getPathOfImagesINFolder(folderPath):
     images = []
