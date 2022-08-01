@@ -1,7 +1,13 @@
+from re import A
 import cv2
 import pytesseract
 import glob, os
 
+def getTextInImage(imagePath):
+    pytesseract.pytesseract.tesseract_cmd = r"C:\Tesseract-OCR\tesseract.exe"
+    img = cv2.imread(imagePath)
+    #cv2.imshow("Image", img)
+    return pytesseract.image_to_string(img)
 
 
 def getPathOfImagesINFolder(folderPath):
@@ -12,20 +18,29 @@ def getPathOfImagesINFolder(folderPath):
                 images.append(os.path.abspath(os.path.join(dirpath, filename)))
     return images
 
-def getTextInImage(imagePath):
-    pytesseract.pytesseract.tesseract_cmd = r"C:\Tesseract-OCR\tesseract.exe"
-    img = cv2.imread(imagePath)
-    #cv2.imshow("Image", img)
-    return pytesseract.image_to_string(img)
+def extractStudentNameFromText(textBeforeName, TextAfterName, allText):
+    return (allText.split(textBeforeName))[1].split(TextAfterName)[0]
+
+
+def clearFile():
+    if os.path.exists("demofile2.txt"):
+        os.remove("demofile2.txt")
 
 
 def writeTextInFile():
+    clearFile()
+
     f = open("demofile2.txt", "a")
-    for images in getPathOfImagesINFolder("./images"):
-        f.write(getTextInImage(images))
+    images =getPathOfImagesINFolder("./images")
+    for image in images :
+        text = getTextInImage(image)
+        studentName = extractStudentNameFromText("This is to certify that ", "has", text)
+        f.write("Name = "+ studentName +"\n")
+
     f.close()
 
-    
+
+
 writeTextInFile()
 
 cv2.waitKey(0)
