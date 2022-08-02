@@ -1,50 +1,100 @@
+from re import A
 import cv2
 import pytesseract
 import glob, os
-import xlwt
-from xlwt import Workbook
+import xlsxwriter
+from pdf2image import convert_from_path
 
-wb = Workbook()
-sheet1 = wb.add_sheet('Sheet 1')
 
-def getAllImagesINFolder(folder):
+# def addStudentNamesToStudentsList():
+#     clearFile()
+#     f = open("demofile2.txt", "a")
+#     images =getPathOfImagesINFolder("./images")
+#     for image in images :
+#         text = getTextInImage(image)
+#         studentName = extractStudentNameFromText("This is to certify that ", "has", text)
+#         f.write("Name = "+ studentName +"\n")
+
+#     f.close()
+
+
+
+
+def getTextInImage(imagePath):
+    pytesseract.pytesseract.tesseract_cmd = r"C:\Tesseract-OCR\tesseract.exe"
+    img = cv2.imread(imagePath)
+    #cv2.imshow("Image", img)
+    return pytesseract.image_to_string(img)
+#
+
+def getPathOfImagesINFolder(folderPath):
     images = []
-    for dirpath,_,filenames in os.walk(folder):
+    for dirpath,_,filenames in os.walk(folderPath):
         for filename in filenames:
-            if filename.endswith(".jpg"):
+            if filename.endswith(".jpeg"):
                 images.append(os.path.abspath(os.path.join(dirpath, filename)))
     return images
 
-def procces(path):
-    pytesseract.pytesseract.tesseract_cmd = r"C:\Tesseract-OCR\tesseract.exe"
-    img = cv2.imread(path)
-    #cv2.imshow("Image", img)
-    return pytesseract.image_to_string(img)
+def extractStudentNameFromText(textBeforeName, TextAfterName, allText):
+    return (allText.split(textBeforeName))[1].split(TextAfterName)[0]
 
-# def excelWrite(dic, data,index: int):
-#     for i in range(len(dic)):
-        
+def writeStudentNamesIntoExcelSheet(names):
 
+    clearFile("students.xlsx")
+    #Create/Open a workbook
+    workbook = xlsxwriter.Workbook('students.xlsx')
 
-# parametersCount = int(input("parameters Count"))
+    #Create worksheet
+    worksheet = workbook.add_worksheet()
 
-# dic=[];
-# for x in range(parametersCount):
-#     first = input("first Text");
-#     second = input("2nd Text");
-#     patameter = input("parameter name");
-#     dic.append({"first":first, "2nd":second,"patameter":patameter})
+    worksheet.write(0, 0, "Name ")
 
-for images in getAllImagesINFolder("./images"):
-    print(images)
-    print(procces(images))
-    print("==============================================================================")
+    row = 1
+    column = 0
+    
+    for name in names:
+        worksheet.write(row, column, name)
+        row += 1
+
+    workbook.close()
 
 
+def clearFile(fileName):
+    if os.path.exists(fileName):
+        os.remove(fileName)
 
-# def extract( start ,  end, data):
-#    return (data.split(start))[1].split(end)[0]
+
+def addStudentNamesToStudentsList():
+    images =getPathOfImagesINFolder("./images")
+    for image in images :
+        text = getTextInImage(image)
+        studentName = extractStudentNameFromText("This is to certify that ", "has", text)
+        studentsNames.append(studentName)
 
 
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+
+
+def convertPdfToImages(pdf_path, saving_folder, poppler_path):
+    pages = convert_from_path(pdf_path=pdf_path,poppler_path=poppler_path)
+    c=1
+    for page in pages:
+        img_name=f"img-{c}.jpeg"
+        page.save(os.path.join(saving_folder,img_name),"JPEG")
+        c+=1
+
+studentsNames = []
+
+poppler_path=r"M:\Popler\poppler-22.04.0\Library\bin"
+
+pdf_path=r"./pdfFiles/DOC.pdf"
+saving_folder = r"./images"
+
+
+convertPdfToImages(pdf_path, saving_folder, poppler_path)
+
+addStudentNamesToStudentsList()
+
+writeStudentNamesIntoExcelSheet(studentsNames)
+
+
+
