@@ -29,11 +29,13 @@ def start():
 
 
 def addStudentNamesToStudentsList2():
-    
     images =getPathOfImagesINFolder(imagesFolderPath)
+
+    array1 = [0] *len(data)
+    dataRows = [array1] *len(images)
     for i in range(len(images)) :
         text = getTextInImage(images[i])
         for i2 in range(len(data)):
-            dataRows[i,i2]= extractStudentNameFromText(data[i2].firstName, data[i2].secondName, text)
+            dataRows[i][i2]= extractStudentNameFromText(data[i2].firstName, data[i2].secondName, text)
     print(dataRows)
 start()
