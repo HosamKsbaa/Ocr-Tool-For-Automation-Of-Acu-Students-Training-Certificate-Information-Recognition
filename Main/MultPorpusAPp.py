@@ -4,16 +4,19 @@ import numpy as nmp
 
 class Item:
     def __init__(self, firstName, secondName,title):
-        self.firstName = firstName
-        self.secondName = secondName
-        self.title = title
+        self.firstName = firstName #sentenceBeforeItem
+        self.secondName = secondName #sentenceAfterItem
+        self.title = title 
 
-data=[]
-dataRows=[[]]
+data=[] #ItemsEtractedFromImage
+dataRows=[[]] 
+
+
+
 def start():
-    eeqNumber= int(input("Enter the Request Number: "))
+    numberOfItemsToBeExtractedFromImg = int(input("Enter the Request Number: ")) # Number of items we want to get from the  file  
     pdfFilePath=input("Enter the path of the pdf file: ")
-    for i in range(eeqNumber):
+    for i in range(numberOfItemsToBeExtractedFromImg):
         firstName=input("Enter First Name: ")
         secondName=input("Enter Second Name: ")
         title =input("Enter Title: ")
@@ -31,7 +34,7 @@ def start():
 
 def addStudentNamesToStudentsList2():
     images =getPathOfImagesINFolder(imagesFolderPath)
-    dataRows = nmp.zeros( (len(data), len(images)) )
+    dataRows = nmp.zeros( (len(images) ,len(data) ),dtype=object )
     for i in range(len(images)) :
         text = getTextInImage(images[i])
         #print(text)
