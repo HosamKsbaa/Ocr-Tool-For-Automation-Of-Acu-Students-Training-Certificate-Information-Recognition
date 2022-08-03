@@ -33,7 +33,7 @@ studentsNames = []
 
 mainFolder=r"./RegistrationProject"+str(time.time())
 
-poppler_path=r"M:\Popler\poppler-22.04.0\Library\bin"
+poppler_path=r"C:\poppler-0.68.0_x86\poppler-0.68.0\bin"
 pdfFilePath=r"./pdfFiles/DOC.pdf"
 imagesFolderPath = mainFolder + "/images"
 excelFileName =  mainFolder+ "/students.xlsx"
