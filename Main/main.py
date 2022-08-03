@@ -65,6 +65,7 @@ def getPathOfImagesINFolder(folderPath):
     return images
 
 def extractStudentNameFromText(textBeforeName, TextAfterName, allText):
+    print(str(type((allText.split(textBeforeName))[1].split(TextAfterName)[0]))+ " is the type")
     return (allText.split(textBeforeName))[1].split(TextAfterName)[0]
 
 def writeStudentNamesIntoExcelSheet(names):

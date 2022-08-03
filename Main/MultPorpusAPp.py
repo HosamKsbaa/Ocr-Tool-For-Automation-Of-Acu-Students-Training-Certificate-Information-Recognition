@@ -1,4 +1,5 @@
 from main import *
+import numpy as nmp
 
 
 class Item:
@@ -30,12 +31,38 @@ def start():
 
 def addStudentNamesToStudentsList2():
     images =getPathOfImagesINFolder(imagesFolderPath)
-
-    array1 = [0] *len(data)
-    dataRows = [array1] *len(images)
+    dataRows = nmp.zeros( (len(data), len(images)) )
     for i in range(len(images)) :
         text = getTextInImage(images[i])
+        #print(text)
+        #print("==================")
         for i2 in range(len(data)):
             dataRows[i][i2]= extractStudentNameFromText(data[i2].firstName, data[i2].secondName, text)
-    print(dataRows)
+            print(str(i) +" : "+str(i2))
+
+    WriteToExcel(dataRows,data)
+    #print(dataRows)
+
+
+def WriteToExcel(dataRows,data):
+    #Clear the excel file i[f exists]
+    deleteFile(excelFileName)
+
+    #Create/Open a workbook
+    workbook = xlsxwriter.Workbook(excelFileName)
+
+    #Create worksheet
+    worksheet = workbook.add_worksheet()
+
+    for i3 in range(len(data)):
+        worksheet.write(0, i3, data[i3].title)
+
+
+    
+    for i in range(len(dataRows)):
+        for i2 in range(len(dataRows[i])):
+            worksheet.write(i+1, i2, dataRows[i][i2])
+           # print(dataRows[i][i2] +" :" +str(i) +" :" +str(i2))
+    workbook.close()
+
 start()
