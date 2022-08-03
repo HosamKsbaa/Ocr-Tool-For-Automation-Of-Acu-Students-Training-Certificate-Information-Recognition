@@ -33,11 +33,14 @@ studentsNames = []
 
 mainFolder=r"./RegistrationProject"+str(time.time())
 
-poppler_path=r"C:\poppler-0.68.0_x86\poppler-0.68.0\bin"
+poppler_path=r"C:\poppler-0.68.0\bin"
 tesseract_cmd =r"C:\Tesseract-OCR\tesseract.exe"
 pdfFilePath=r"./pdfFiles/DOC.pdf"
 imagesFolderPath = mainFolder + "/images"
 excelFileName =  mainFolder+ "/students.xlsx"
+
+
+
 
 def setFilesPath(_pdfFilePath):
     global pdfFilePath
