@@ -33,7 +33,7 @@ studentsNames = []
 
 mainFolder=r"./RegistrationProject"+str(time.time())
 
-poppler_path=r"C:\poppler-0.68.0\bin"
+poppler_path=r"C:\poppler-22.04.0\Library\bin" 
 tesseract_cmd =r"C:\Tesseract-OCR\tesseract.exe"
 pdfFilePath=r"./pdfFiles/DOC.pdf"
 imagesFolderPath = mainFolder + "/images"
@@ -159,5 +159,3 @@ def execProg(_pdfFilePath):
     deleteFolder(imagesFolderPath)
 
     
-
-
