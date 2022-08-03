@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'selPdf.ui'
+# Form implementation generated from reading ui file 'hos.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -9,24 +9,27 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog, QWidget
 from main import execProg
 
-class Ui_MainWindow(QWidget):
+
+
+
+
+
+class Ui_MainWindow(object):
+
+    
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 601)
+        MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.btn_selectPdf = QtWidgets.QPushButton(self.centralwidget,clicked=lambda:(self.btn_selectPdfClicked()))
-        self.btn_selectPdf.setGeometry(QtCore.QRect(90, 270, 151, 51))
-        self.btn_selectPdf.setObjectName("btn_selectPdf")
-        self.lbl_openFile = QtWidgets.QLabel(self.centralwidget)
-        self.lbl_openFile.setGeometry(QtCore.QRect(100, 120, 671, 71))
-        font = QtGui.QFont()
-        font.setPointSize(26)
-        self.lbl_openFile.setFont(font)
-        self.lbl_openFile.setObjectName("lbl_openFile")
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget, clicked=lambda:self.clicked("Hellooo"))
+        self.pushButton.setGeometry(QtCore.QRect(330, 270, 75, 24))
+        self.pushButton.setObjectName("pushButton")
+        self.lbl_printed = QtWidgets.QLabel(self.centralwidget)
+        self.lbl_printed.setGeometry(QtCore.QRect(340, 170, 55, 16))
+        self.lbl_printed.setObjectName("lbl_printed")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
@@ -35,27 +38,33 @@ class Ui_MainWindow(QWidget):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def btn_selectPdfClicked(self):
+#Butto        
+    def clicked(self, text):
+        execProg()
 
-        #Open File Dialog
-        pdfFilePath = QFileDialog.getOpenFileName(self, "Open File", "", "Pdf Files (*.pdf)")
-        if pdfFilePath:
-            print(pdfFilePath[0])
-            execProg(_pdfFilePath=pdfFilePath[0])
+    def updateNumberOfstudentsLabel(self, studentNumber):
+        self.lbl_printed.setText(studentNumber)
+
             
+        
 
         
+        
+    
+            
+        
+    
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.btn_selectPdf.setText(_translate("MainWindow", "Open PDF File"))
-        self.lbl_openFile.setText(_translate("MainWindow", "Open File:"))
-
+        self.pushButton.setText(_translate("MainWindow", "Button"))
+        self.lbl_printed.setText(_translate("MainWindow", "TextLabel"))
+    
+    
 
 if __name__ == "__main__":
     import sys
@@ -65,3 +74,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+

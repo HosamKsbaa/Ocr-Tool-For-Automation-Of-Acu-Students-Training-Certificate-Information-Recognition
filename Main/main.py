@@ -9,6 +9,8 @@ import os
 import time
 
 
+
+
 documentsPath =os.path.expanduser('~\Documents')
 
 
@@ -23,6 +25,10 @@ documentsPath =os.path.expanduser('~\Documents')
 #         f.write("Name = "+ studentName +"\n")
 #     f.close()
 
+
+
+
+
 studentsNames = []
 
 mainFolder=r"./RegistrationProject"+str(time.time())
@@ -31,6 +37,12 @@ poppler_path=r"M:\Popler\poppler-22.04.0\Library\bin"
 pdfFilePath=r"./pdfFiles/DOC.pdf"
 imagesFolderPath = mainFolder + "/images"
 excelFileName =  mainFolder+ "/students.xlsx"
+
+def setFilesPath(_pdfFilePath):
+    global pdfFilePath
+    pdfFilePath = _pdfFilePath
+
+
 
 
 def getTextInImage(imagePath):
@@ -78,11 +90,15 @@ def writeStudentNamesIntoExcelSheet(names):
 
 def addStudentNamesToStudentsList():
     
+    studentNumber = 1 
     images =getPathOfImagesINFolder(imagesFolderPath)
-    for image in images :
+    for image in images:
         text = getTextInImage(image)
         studentName = extractStudentNameFromText("This is to certify that ", "has", text)
         studentsNames.append(studentName)
+        studentNumber+=1 
+
+       # updateNumberOfstudentsLabel(studentNumber)
 
 
 
@@ -120,10 +136,10 @@ def clearNeededFiles():
 def createNeededFiles():
     createFolder(mainFolder)
     createFolder(imagesFolderPath)
+    
+def execProg(_pdfFilePath):
+    setFilesPath(_pdfFilePath)
 
-
-
-def execProg():
     clearNeededFiles()
     createNeededFiles() 
 
@@ -137,6 +153,6 @@ def execProg():
     # Delete images folder
     deleteFolder(imagesFolderPath)
 
-
+    
 
 
