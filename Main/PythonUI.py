@@ -47,7 +47,7 @@ class Ui_MainWindow(QWidget):
             print(pdfFilePath[0])
             execProg(_pdfFilePath=pdfFilePath[0])
             
-
+#
         
 
     def retranslateUi(self, MainWindow):
