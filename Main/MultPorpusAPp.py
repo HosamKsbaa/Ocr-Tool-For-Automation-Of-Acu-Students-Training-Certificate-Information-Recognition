@@ -41,7 +41,6 @@ def addStudentNamesToStudentsList2():
         #print("==================")
         for i2 in range(len(data)):
             dataRows[i][i2]= extractStudentNameFromText(data[i2].firstName, data[i2].secondName, text)
-            print(str(i) +" : "+str(i2))
 
     WriteToExcel(dataRows,data)
     #print(dataRows)
