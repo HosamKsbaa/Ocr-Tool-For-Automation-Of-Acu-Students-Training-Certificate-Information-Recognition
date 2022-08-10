@@ -1,9 +1,18 @@
 from re import A
+import shutil
 import cv2
 import pytesseract
 import glob, os
 import xlsxwriter
 from pdf2image import convert_from_path
+import os
+import time
+
+
+
+
+documentsPath =os.path.expanduser('~\Documents')
+
 
 
 # def addStudentNamesToStudentsList():
@@ -14,14 +23,34 @@ from pdf2image import convert_from_path
 #         text = getTextInImage(image)
 #         studentName = extractStudentNameFromText("This is to certify that ", "has", text)
 #         f.write("Name = "+ studentName +"\n")
-
 #     f.close()
 
 
 
 
+
+studentsNames = []
+
+mainFolder=r"./RegistrationProject"+str(time.time())
+
+poppler_path=r"C:\poppler-0.68.0\bin"
+tesseract_cmd =r"C:\Tesseract-OCR\tesseract.exe"
+pdfFilePath=r"./pdfFiles/DOC.pdf"
+imagesFolderPath = mainFolder + "/images"
+excelFileName =  mainFolder+ "/students.xlsx"
+
+
+
+
+def setFilesPath(_pdfFilePath):
+    global pdfFilePath
+    pdfFilePath = _pdfFilePath
+
+
+
+
 def getTextInImage(imagePath):
-    pytesseract.pytesseract.tesseract_cmd = r"C:\Tesseract-OCR\tesseract.exe"
+    pytesseract.pytesseract.tesseract_cmd = tesseract_cmd
     img = cv2.imread(imagePath)
     #cv2.imshow("Image", img)
     return pytesseract.image_to_string(img)
@@ -36,13 +65,15 @@ def getPathOfImagesINFolder(folderPath):
     return images
 
 def extractStudentNameFromText(textBeforeName, TextAfterName, allText):
+    print(str(type((allText.split(textBeforeName))[1].split(TextAfterName)[0]))+ " is the type")
     return (allText.split(textBeforeName))[1].split(TextAfterName)[0]
 
 def writeStudentNamesIntoExcelSheet(names):
+    #Clear the excel file i[f exists]
+    deleteFile(excelFileName)
 
-    clearFile("students.xlsx")
     #Create/Open a workbook
-    workbook = xlsxwriter.Workbook('students.xlsx')
+    workbook = xlsxwriter.Workbook(excelFileName)
 
     #Create worksheet
     worksheet = workbook.add_worksheet()
@@ -51,7 +82,7 @@ def writeStudentNamesIntoExcelSheet(names):
 
     row = 1
     column = 0
-    
+
     for name in names:
         worksheet.write(row, column, name)
         row += 1
@@ -59,17 +90,20 @@ def writeStudentNamesIntoExcelSheet(names):
     workbook.close()
 
 
-def clearFile(fileName):
-    if os.path.exists(fileName):
-        os.remove(fileName)
+
 
 
 def addStudentNamesToStudentsList():
-    images =getPathOfImagesINFolder("./images")
-    for image in images :
+    
+    studentNumber = 1 
+    images =getPathOfImagesINFolder(imagesFolderPath)
+    for image in images:
         text = getTextInImage(image)
         studentName = extractStudentNameFromText("This is to certify that ", "has", text)
         studentsNames.append(studentName)
+        studentNumber+=1 
+
+       # updateNumberOfstudentsLabel(studentNumber)
 
 
 
@@ -82,19 +116,48 @@ def convertPdfToImages(pdf_path, saving_folder, poppler_path):
         page.save(os.path.join(saving_folder,img_name),"JPEG")
         c+=1
 
-studentsNames = []
-
-poppler_path=r"M:\Popler\poppler-22.04.0\Library\bin"
-
-pdf_path=r"./pdfFiles/DOC.pdf"
-saving_folder = r"./images"
 
 
-convertPdfToImages(pdf_path, saving_folder, poppler_path)
+def createFolder(folderPath):
+    if not os.path.isdir(folderPath):
+        os.mkdir(folderPath)
 
-addStudentNamesToStudentsList()
 
-writeStudentNamesIntoExcelSheet(studentsNames)
+def deleteFolder(folderPath):
+    if os.path.isdir(folderPath):
+        shutil.rmtree(folderPath)
 
+
+def deleteFile(filePath):
+    if os.path.exists(filePath):
+        os.remove(filePath)
+    
+
+
+def clearNeededFiles():
+    deleteFolder(imagesFolderPath)
+    deleteFile(excelFileName)
+    
+def createNeededFiles():
+    createFolder(mainFolder)
+    createFolder(imagesFolderPath)
+    
+def execProg(_pdfFilePath):
+    setFilesPath(_pdfFilePath)
+
+    clearNeededFiles()
+    createNeededFiles() 
+
+    # Do all processing
+    convertPdfToImages(pdfFilePath, imagesFolderPath, poppler_path)
+    
+
+    addStudentNamesToStudentsList()
+    writeStudentNamesIntoExcelSheet(studentsNames)
+
+    # Delete images folder
+    deleteFolder(imagesFolderPath)
+
+    
 
 
